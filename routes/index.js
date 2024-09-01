@@ -203,13 +203,13 @@ router.post(
 // POST
 
 router.post("/register", function (req, res) {
-  const user = new userModel({
+  const userData = new userModel({
     username: req.body.username,
-    email: req.body.email,
     name: req.body.name,
+    email: req.body.email,
   });
 
-  userModel.register(user, req.body.password).then(function (registereduser) {
+  userModel.register(userData, req.body.password).then(function (registereduser) {
     passport.authenticate("local")(req, res, function () {
       res.redirect("/profile");
     });
