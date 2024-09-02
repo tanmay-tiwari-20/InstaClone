@@ -143,7 +143,7 @@ router.get("/upload", isLoggedIn, async function (req, res) {
   res.render("upload", { footer: true, user });
 });
 
-router.post("/update", isLoggedIn, async function (req, res) {
+router.post("/update", upload.single("image"),  isLoggedIn, async function (req, res) {
   const user = await userModel.findOneAndUpdate(
     { username: req.session.passport.user },
     { username: req.body.username, name: req.body.name, bio: req.body.bio },
@@ -209,11 +209,13 @@ router.post("/register", function (req, res) {
     email: req.body.email,
   });
 
-  userModel.register(userData, req.body.password).then(function (registereduser) {
-    passport.authenticate("local")(req, res, function () {
-      res.redirect("/profile");
+  userModel
+    .register(userData, req.body.password)
+    .then(function (registereduser) {
+      passport.authenticate("local")(req, res, function () {
+        res.redirect("/profile");
+      });
     });
-  });
 });
 
 router.post(
