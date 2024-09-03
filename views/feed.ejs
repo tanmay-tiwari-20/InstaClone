@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="story px-3 flex gap-3 overflow-auto mt-5">
-      <a href="/story">
+      <a href="/profile">
         <div class="circle flex-shrink-0">
           <div
             class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
@@ -59,11 +59,12 @@
                     <i class="ri-chat-3-line"></i>
                     <i class="ri-share-circle-line"></i>
             </div>
-            <% if(user.saved.indexOf(post.id)===-1){ %>
+            <% if (user.saved.indexOf(post.id)===-1) { %>
               <i data-postid="<%= post.id %>" class="save ri-bookmark-line"></i>
               <% } else { %>
                 <i data-postid="<%= post.id %>" class="save ri-bookmark-fill text-zinc-100"></i>
                 <% } %>
+
           </div>
           <h3 class="likeval px-4 mt-2 text-sm leading-none tracking-tight">
             <%= post.like.length %> likes
@@ -138,7 +139,25 @@
           })
           .catch(err => console.error("Error liking the post:", err));
       }
+
+
+      else if (dets.target.classList.contains("save")) {
+        var id = dets.target.dataset.postid;
+        fetch(`/save/${id}`)
+          .then(raw => raw.json())
+          .then(result => {
+            if (!dets.target.classList.contains("ri-bookmark-line")) {
+              dets.target.classList.remove("ri-bookmark-fill", "text-zinc-100");
+              dets.target.classList.add("ri-bookmark-line")
+            }
+            else {
+              dets.target.classList.remove("ri-bookmark-line")
+              dets.target.classList.add("ri-bookmark-fill", "text-zinc-100")
+            }
+          })
+      }
     });
+
   </script>
 
 
